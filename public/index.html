@@ -15,7 +15,10 @@
 
 <body>
     <script type="module">
+        // Import de la librairie
         import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+
+        // Création de la scène, de la caméra et du rendu
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -24,6 +27,27 @@
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
+
+        // Fonction pour redimensionner la scène à la fenêtre
+        function OnWindowResize() {
+            let SCREEN_WIDTH = window.innerWidth;
+            let SCREEN_HEIGHT = window.innerHeight;
+            let ratioLargeurHauteur = SCREEN_WIDTH / SCREEN_HEIGHT;
+
+            camera.aspect = ratioLargeurHauteur;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+        window.addEventListener("resize", OnWindowResize);
+
+        // Création d'un cube
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const cube = new THREE.Mesh(geometry, material);
+        scene.add(cube);
+
+        camera.position.z = 5;
     </script>
 </body>
 
