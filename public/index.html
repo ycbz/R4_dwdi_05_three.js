@@ -51,36 +51,36 @@
         var materialCube1_6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - cyan
 
         var face1_1 = new THREE.Mesh(geometryCube1, materialCube1_1); // Face avant
-        face1.position.z = -0.5;
-        scene.add(face1);
+        face1_1.position.z = -0.5;
+        scene.add(face1_1);
 
-        var face2 = new THREE.Mesh(geometryCube1, materialCube1_2); // Face arrière
-        face2.position.z = 0.5;
-        face2.rotation.y = Math.PI;
-        scene.add(face2);
+        var face1_2 = new THREE.Mesh(geometryCube1, materialCube1_2); // Face arrière
+        face1_2.position.z = 0.5;
+        face1_2.rotation.y = Math.PI;
+        scene.add(face1_2);
 
-        var face3 = new THREE.Mesh(geometryCube1, materialCube1_3); // Face supérieure
-        face3.position.y = 0.5;
-        face3.rotation.x = -Math.PI / 2;
-        scene.add(face3);
+        var face1_3 = new THREE.Mesh(geometryCube1, materialCube1_3); // Face supérieure
+        face1_3.position.y = 0.5;
+        face1_3.rotation.x = -Math.PI / 2;
+        scene.add(face1_3);
 
-        var face4 = new THREE.Mesh(geometryCube1, materialCube1_4); // Face inférieure
-        face4.position.y = -0.5;
-        face4.rotation.x = Math.PI / 2;
-        scene.add(face4);
+        var face1_4 = new THREE.Mesh(geometryCube1, materialCube1_4); // Face inférieure
+        face1_4.position.y = -0.5;
+        face1_4.rotation.x = Math.PI / 2;
+        scene.add(face1_4);
 
-        var face5 = new THREE.Mesh(geometryCube1, materialCube1_5); // Face gauche
-        face5.position.x = -0.5;
-        face5.rotation.y = -Math.PI / 2;
-        scene.add(face5);
+        var face1_5 = new THREE.Mesh(geometryCube1, materialCube1_5); // Face gauche
+        face1_5.position.x = -0.5;
+        face1_5.rotation.y = -Math.PI / 2;
+        scene.add(face1_5);
 
-        var face6 = new THREE.Mesh(geometryCube1, materialCube1_6); // Face droite
-        face6.position.x = 0.5;
-        face6.rotation.y = Math.PI / 2;
-        scene.add(face6);
+        var face1_6 = new THREE.Mesh(geometryCube1, materialCube1_6); // Face droite
+        face1_6.position.x = 0.5;
+        face1_6.rotation.y = Math.PI / 2;
+        scene.add(face1_6);
 
         var cube1 = new THREE.Group();
-        cube1.add(face1, face2, face3, face4, face5, face6);
+        cube1.add(face1_1, face1_2, face1_3, face1_4, face1_5, face1_6);
         scene.add(cube1);
 
         // Contrôle de l'orbite
