@@ -35,44 +35,64 @@
         // Création de la scène, de la caméra et du rendu
         const scene = new THREE.Scene();
 
-        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
 
         const renderer = new THREE.WebGLRenderer();
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Création d'un cube
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        // Créer les six faces du cube
+        var geometryCube1 = new THREE.PlaneGeometry(1, 1); // Les dimensions d'une face sont de 1 unité par 1 unité
+        var materialCube1_1 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face avant - rouge
+        var materialCube1_2 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face arrière - vert
+        var materialCube1_3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - bleu
+        var materialCube1_4 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }); // Face inférieure - jaune
+        var materialCube1_5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - magenta
+        var materialCube1_6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - cyan
 
-        camera.position.x = 5;
-        camera.position.y = 3.5;
-        camera.position.z = 5;
+        var face1_1 = new THREE.Mesh(geometryCube1, materialCube1_1); // Face avant
+        face1.position.z = -0.5;
+        scene.add(face1);
 
-        // Duplication du cube pour créer le Rubik's Cube
-        const cubeGroup = new THREE.Group();
-        for (let i = 0; i < 27; i++) {
-            const cube = new THREE.Mesh(geometry, material);
-            cube.position.x = Math.floor(i / 9) - 1;
-            cube.position.y = Math.floor(i / 3) % 3 - 1;
-            cube.position.z = i % 3 - 1;
-            cubeGroup.add(cube);
+        var face2 = new THREE.Mesh(geometryCube1, materialCube1_2); // Face arrière
+        face2.position.z = 0.5;
+        face2.rotation.y = Math.PI;
+        scene.add(face2);
 
-            const cubeBoxHelper = new THREE.BoxHelper(cube, 0x000000);
-            cubeBoxHelper.material.color.set(0x000000);
-            cubeBoxHelper.material.linewidth = 1;
-            cubeGroup.add(cubeBoxHelper);
-        }
-        scene.add(cubeGroup);
+        var face3 = new THREE.Mesh(geometryCube1, materialCube1_3); // Face supérieure
+        face3.position.y = 0.5;
+        face3.rotation.x = -Math.PI / 2;
+        scene.add(face3);
+
+        var face4 = new THREE.Mesh(geometryCube1, materialCube1_4); // Face inférieure
+        face4.position.y = -0.5;
+        face4.rotation.x = Math.PI / 2;
+        scene.add(face4);
+
+        var face5 = new THREE.Mesh(geometryCube1, materialCube1_5); // Face gauche
+        face5.position.x = -0.5;
+        face5.rotation.y = -Math.PI / 2;
+        scene.add(face5);
+
+        var face6 = new THREE.Mesh(geometryCube1, materialCube1_6); // Face droite
+        face6.position.x = 0.5;
+        face6.rotation.y = Math.PI / 2;
+        scene.add(face6);
+
+        var cube1 = new THREE.Group();
+        cube1.add(face1, face2, face3, face4, face5, face6);
+        scene.add(cube1);
 
         // Contrôle de l'orbite
         const controls = new OrbitControls(camera, renderer.domElement);
 
+        camera.position.set(2, 2, 2);
+        camera.lookAt(0, 0, 0);
+
         // Fonction d'affichage du rendu
         function animate() {
             requestAnimationFrame(animate);
+            controls.update();
             renderer.render(scene, camera);
         }
         animate();
