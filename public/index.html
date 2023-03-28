@@ -44,11 +44,11 @@
         // Créer les six faces du cube
         var geometryCube1 = new THREE.PlaneGeometry(1, 1); // Les dimensions d'une face sont de 1 unité par 1 unité
         var materialCube1_1 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face avant - rouge
-        var materialCube1_2 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face arrière - vert
-        var materialCube1_3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - bleu
+        var materialCube1_2 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face arrière - orange
+        var materialCube1_3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - blanc
         var materialCube1_4 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }); // Face inférieure - jaune
-        var materialCube1_5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - magenta
-        var materialCube1_6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - cyan
+        var materialCube1_5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - bleu
+        var materialCube1_6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - vert
 
         var face1_1 = new THREE.Mesh(geometryCube1, materialCube1_1); // Face avant
         face1_1.position.z = -0.5;
