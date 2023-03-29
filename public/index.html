@@ -66,36 +66,109 @@
         }
         scene.add(cubeGroup);
 
-        const cube0 = scene.getObjectByName("cube0");
-        const cube1 = scene.getObjectByName("cube1");
-        const cube2 = scene.getObjectByName("cube2");
-        const cube3 = scene.getObjectByName("cube3");
-        const cube4 = scene.getObjectByName("cube4");
-        const cube5 = scene.getObjectByName("cube5");
-        const cube6 = scene.getObjectByName("cube6");
-        const cube7 = scene.getObjectByName("cube7");
-        const cube8 = scene.getObjectByName("cube8");
-        const cube9 = scene.getObjectByName("cube9");
-        const cube10 = scene.getObjectByName("cube10");
-        const cube11 = scene.getObjectByName("cube11");
-        const cube12 = scene.getObjectByName("cube12");
-        const cube13 = scene.getObjectByName("cube13");
-        const cube14 = scene.getObjectByName("cube14");
-        const cube15 = scene.getObjectByName("cube15");
-        const cube16 = scene.getObjectByName("cube16");
-        const cube17 = scene.getObjectByName("cube17");
-        const cube18 = scene.getObjectByName("cube18");
-        const cube19 = scene.getObjectByName("cube19");
-        const cube20 = scene.getObjectByName("cube20");
-        const cube21 = scene.getObjectByName("cube21");
-        const cube22 = scene.getObjectByName("cube22");
-        const cube23 = scene.getObjectByName("cube23");
-        const cube24 = scene.getObjectByName("cube24");
-        const cube25 = scene.getObjectByName("cube25");
-        const cube26 = scene.getObjectByName("cube26");
+        const cube0 = scene.getObjectByName("cube0"); // Groupes 1, 2, 5 & 6
+        const cube1 = scene.getObjectByName("cube1"); // Groupes 1, 2, 5 & 6
+        const cube2 = scene.getObjectByName("cube2"); // Groupes 1, 2, 5 & 6
+        const cube3 = scene.getObjectByName("cube3"); // Groupes 2 & 6
+        const cube4 = scene.getObjectByName("cube4"); // Centre
+        const cube5 = scene.getObjectByName("cube5"); // Groupes 2 & 6
+        const cube6 = scene.getObjectByName("cube6"); // Groupes 2 & 6
+        const cube7 = scene.getObjectByName("cube7"); // Groupes 2, 3, 6 & 7
+        const cube8 = scene.getObjectByName("cube8"); // Groupes 2 & 6
+        const cube9 = scene.getObjectByName("cube9"); // Groupes 1 & 5
+        const cube10 = scene.getObjectByName("cube10"); // Centre
+        const cube11 = scene.getObjectByName("cube11"); // Groupes 1 & 5
+        const cube12 = scene.getObjectByName("cube12"); // Centre
+        const cube13 = scene.getObjectByName("cube13"); // Cube central
+        const cube14 = scene.getObjectByName("cube14"); // Centre
+        const cube15 = scene.getObjectByName("cube15"); // Groupes 3 & 7
+        const cube16 = scene.getObjectByName("cube16"); // Centre
+        const cube17 = scene.getObjectByName("cube17"); // Groupes 3 & 7
+        const cube18 = scene.getObjectByName("cube18"); // Groupes 1 & 5
+        const cube19 = scene.getObjectByName("cube19"); // Groupes 1 & 5
+        const cube20 = scene.getObjectByName("cube20"); // Groupes 1 & 5
+        const cube21 = scene.getObjectByName("cube21"); // Groupes 3 & 7
+        const cube22 = scene.getObjectByName("cube22"); // Centre
+        const cube23 = scene.getObjectByName("cube23"); // Groupes 4 & 8
+        const cube24 = scene.getObjectByName("cube24"); // Groupes 3 & 7
+        const cube25 = scene.getObjectByName("cube25"); // Groupes 3 & 7
+        const cube26 = scene.getObjectByName("cube26"); // Groupes 2 & 6
+
+        const group1 = new THREE.Group();
+        group1.add(cube0, cube1, cube2, cube9, cube11, cube18, cube19, cube20);
+        // const group2 = new THREE.Group();
+        // group2.add(cube0, cube1, cube2, cube3, cube5, cube6, cube7, cube8);
+        // const group3 = new THREE.Group();
+        // group3.add(cube6, cube7, cube9, cube15, cube17, cube21, cube24, cube25, cube26);
+        // const group4 = new THREE.Group();
+        // group4.add(cube5, cube23, cube24, cube25, cube26);
+        const group5 = new THREE.Group();
+        group5.add(cube0, cube1, cube2, cube9, cube11, cube18, cube19, cube20);
+        // const group6 = new THREE.Group();
+        // group6.add(cube0, cube1, cube2, cube3, cube5, cube6, cube7, cube8);
+        // const group7 = new THREE.Group();
+        // group7.add(cube7, cube9, cube15, cube17, cube21, cube24, cube25, cube26);
+        // const group8 = new THREE.Group();
+        // group8.add();
+
+        scene.add(group1, group5);
+
+        // Ajout d'un événement de souris pour faire tourner le cube
+        const mouse = new THREE.Vector2();
+        const raycaster = new THREE.Raycaster();
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        const rotateSpeed = 0.5;
+
+        function onMouseMove(event) {
+            // Calcul de la position de la souris en coordonnées normalisées (-1 à 1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            // Rotation du cube en fonction de la position de la souris
+            if (isDragging) {
+                const deltaMove = {
+                    x: event.clientX - previousMousePosition.x,
+                    y: event.clientY - previousMousePosition.y
+                };
+
+                const deltaRotationQuaternion = new THREE.Quaternion()
+                    .setFromEuler(new THREE.Euler(
+                        toRadians(deltaMove.y * rotateSpeed),
+                        toRadians(deltaMove.x * rotateSpeed),
+                        0,
+                        'XYZ'
+                    ));
+
+                cube10.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube10.quaternion);
+            }
+
+            previousMousePosition = {
+                x: event.clientX,
+                y: event.clientY
+            };
+        }
+
+        function onMouseDown(event) {
+            isDragging = true;
+        }
+
+        function onMouseUp(event) {
+            isDragging = false;
+        }
+
+        // Ajout des écouteurs d'événements de la souris
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('mousedown', onMouseDown);
+        window.addEventListener('mouseup', onMouseUp);
+
+        // Fonction utilitaire pour convertir les degrés en radians
+        function toRadians(angle) {
+            return angle * (Math.PI / 180);
+        }
 
         // Contrôle de l'orbite
-        // const controls = new OrbitControls(camera, renderer.domElement);
+        const controls = new OrbitControls(camera, renderer.domElement);
 
         camera.position.set(-6, 4, -6);
         camera.lookAt(0, 0, 0);
@@ -103,9 +176,42 @@
         // Fonction d'affichage du rendu
         function animate() {
             requestAnimationFrame(animate);
-            // controls.update();
+            const speed = 0.1;
+            // Déplacement horizontal
+            if (keys.ArrowRight) {
+                cube6.position.x += speed;
+            } else if (keys.ArrowLeft) {
+                cube6.position.x -= speed;
+            }
+
+            // Déplacement vertical
+            if (keys.ArrowUp) {
+                cube6.position.y += speed;
+            } else if (keys.ArrowDown) {
+                cube6.position.y -= speed;
+            }
+
             renderer.render(scene, camera);
         }
+
+        // Tableau pour stocker les touches enfoncées
+        const keys = {};
+
+        // Fonction pour gérer les événements de clavier
+        function onKeyDown(event) {
+            keys[event.code] = true;
+        }
+
+        function onKeyUp(event) {
+            keys[event.code] = false;
+        }
+
+        // Ajout des écouteurs d'événements de clavier
+        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('keyup', onKeyUp);
+        controls.update();
+        renderer.render(scene, camera);
+
         animate();
     </script>
 </body>
