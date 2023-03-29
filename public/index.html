@@ -41,10 +41,10 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Cube 1
+        // Cube originel
         var geometryCube = new THREE.BoxGeometry(1, 1, 1);
-        var materialCube1 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face avant - rouge
-        var materialCube2 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face arrière - orange
+        var materialCube1 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face avant - orange
+        var materialCube2 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face arrière - rouge
         var materialCube3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - blanc
         var materialCube4 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }); // Face inférieure - jaune
         var materialCube5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - bleu
@@ -54,18 +54,48 @@
         var cubeSize = 1.01;
 
         // Boucle pour créer tous les cubes
-        for (var i = 0; i < 27; i++) {
-            var cube = new THREE.Mesh(geometryCube, [materialCube1, materialCube2, materialCube3, materialCube4, materialCube5, materialCube6]);
-            var x = (i % 3) * cubeSize;
-            var y = Math.floor((i % 9) / 3) * cubeSize;
-            var z = Math.floor(i / 9) * cubeSize;
+        for (let i = 0; i < 27; i++) {
+            const cubeName = `cube${i}`;
+            const cube = new THREE.Mesh(geometryCube, [materialCube1, materialCube2, materialCube3, materialCube4, materialCube5, materialCube6]);
+            const x = (i % 3) * cubeSize;
+            const y = Math.floor((i % 9) / 3) * cubeSize;
+            const z = Math.floor(i / 9) * cubeSize;
             cube.position.set(x - cubeSize, y - cubeSize, z - cubeSize);
+            cube.name = cubeName; // assigner le nom unique à la propriété "name" de l'objet cube
             cubeGroup.add(cube);
         }
         scene.add(cubeGroup);
 
+        const cube0 = scene.getObjectByName("cube0");
+        const cube1 = scene.getObjectByName("cube1");
+        const cube2 = scene.getObjectByName("cube2");
+        const cube3 = scene.getObjectByName("cube3");
+        const cube4 = scene.getObjectByName("cube4");
+        const cube5 = scene.getObjectByName("cube5");
+        const cube6 = scene.getObjectByName("cube6");
+        const cube7 = scene.getObjectByName("cube7");
+        const cube8 = scene.getObjectByName("cube8");
+        const cube9 = scene.getObjectByName("cube9");
+        const cube10 = scene.getObjectByName("cube10");
+        const cube11 = scene.getObjectByName("cube11");
+        const cube12 = scene.getObjectByName("cube12");
+        const cube13 = scene.getObjectByName("cube13");
+        const cube14 = scene.getObjectByName("cube14");
+        const cube15 = scene.getObjectByName("cube15");
+        const cube16 = scene.getObjectByName("cube16");
+        const cube17 = scene.getObjectByName("cube17");
+        const cube18 = scene.getObjectByName("cube18");
+        const cube19 = scene.getObjectByName("cube19");
+        const cube20 = scene.getObjectByName("cube20");
+        const cube21 = scene.getObjectByName("cube21");
+        const cube22 = scene.getObjectByName("cube22");
+        const cube23 = scene.getObjectByName("cube23");
+        const cube24 = scene.getObjectByName("cube24");
+        const cube25 = scene.getObjectByName("cube25");
+        const cube26 = scene.getObjectByName("cube26");
+
         // Contrôle de l'orbite
-        const controls = new OrbitControls(camera, renderer.domElement);
+        // const controls = new OrbitControls(camera, renderer.domElement);
 
         camera.position.set(-6, 4, -6);
         camera.lookAt(0, 0, 0);
@@ -73,7 +103,7 @@
         // Fonction d'affichage du rendu
         function animate() {
             requestAnimationFrame(animate);
-            controls.update();
+            // controls.update();
             renderer.render(scene, camera);
         }
         animate();
