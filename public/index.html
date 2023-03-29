@@ -41,52 +41,33 @@
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-        // Créer les six faces du cube
-        var geometryCube1 = new THREE.PlaneGeometry(1, 1); // Les dimensions d'une face sont de 1 unité par 1 unité
-        var materialCube1_1 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face avant - rouge
-        var materialCube1_2 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face arrière - orange
-        var materialCube1_3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - blanc
-        var materialCube1_4 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }); // Face inférieure - jaune
-        var materialCube1_5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - bleu
-        var materialCube1_6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - vert
+        // Cube 1
+        var geometryCube = new THREE.BoxGeometry(1, 1, 1);
+        var materialCube1 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face avant - rouge
+        var materialCube2 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face arrière - orange
+        var materialCube3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - blanc
+        var materialCube4 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }); // Face inférieure - jaune
+        var materialCube5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - bleu
+        var materialCube6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - vert
 
-        var face1_1 = new THREE.Mesh(geometryCube1, materialCube1_1); // Face avant
-        face1_1.position.z = -0.5;
-        scene.add(face1_1);
+        var cubeGroup = new THREE.Group();
+        var cubeSize = 1.01;
 
-        var face1_2 = new THREE.Mesh(geometryCube1, materialCube1_2); // Face arrière
-        face1_2.position.z = 0.5;
-        face1_2.rotation.y = Math.PI;
-        scene.add(face1_2);
-
-        var face1_3 = new THREE.Mesh(geometryCube1, materialCube1_3); // Face supérieure
-        face1_3.position.y = 0.5;
-        face1_3.rotation.x = -Math.PI / 2;
-        scene.add(face1_3);
-
-        var face1_4 = new THREE.Mesh(geometryCube1, materialCube1_4); // Face inférieure
-        face1_4.position.y = -0.5;
-        face1_4.rotation.x = Math.PI / 2;
-        scene.add(face1_4);
-
-        var face1_5 = new THREE.Mesh(geometryCube1, materialCube1_5); // Face gauche
-        face1_5.position.x = -0.5;
-        face1_5.rotation.y = -Math.PI / 2;
-        scene.add(face1_5);
-
-        var face1_6 = new THREE.Mesh(geometryCube1, materialCube1_6); // Face droite
-        face1_6.position.x = 0.5;
-        face1_6.rotation.y = Math.PI / 2;
-        scene.add(face1_6);
-
-        var cube1 = new THREE.Group();
-        cube1.add(face1_1, face1_2, face1_3, face1_4, face1_5, face1_6);
-        scene.add(cube1);
+        // Boucle pour créer tous les cubes
+        for (var i = 0; i < 27; i++) {
+            var cube = new THREE.Mesh(geometryCube, [materialCube1, materialCube2, materialCube3, materialCube4, materialCube5, materialCube6]);
+            var x = (i % 3) * cubeSize;
+            var y = Math.floor((i % 9) / 3) * cubeSize;
+            var z = Math.floor(i / 9) * cubeSize;
+            cube.position.set(x - cubeSize, y - cubeSize, z - cubeSize);
+            cubeGroup.add(cube);
+        }
+        scene.add(cubeGroup);
 
         // Contrôle de l'orbite
         const controls = new OrbitControls(camera, renderer.domElement);
 
-        camera.position.set(2, 2, 2);
+        camera.position.set(-6, 4, -6);
         camera.lookAt(0, 0, 0);
 
         // Fonction d'affichage du rendu
