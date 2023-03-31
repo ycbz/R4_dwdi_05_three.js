@@ -47,22 +47,39 @@
 
         scene.add(group);
 
-        // Fonction de rotation de la face sur l'axe z
-        function rotateFaceZ() {
-            const angle = Math.PI / 2; // Angle de rotation
-            const duration = 500; // Durée de la rotation en ms
-            const delay = 1000; // Délai avant de commencer la rotation en ms
-            const quaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), angle); // Calcul du quaternion de rotation
-            const tween = new TWEEN.Tween(group.quaternion)
-                .to({ x: quaternion.x, y: quaternion.y, z: quaternion.z, w: quaternion.w }, duration)
-                .delay(delay)
-                .start();
+        // Animation de rotation de la face
+        const rotationSpeed = Math.PI / 2; // en radians par seconde
+        let lastTime = null;
+        let rotationAngle = 0;
+        let isRotating = false;
+
+        function rotateFace() {
+            if (isRotating) return;
+            isRotating = true;
+            const startTime = Date.now();
+            const duration = 500; // en millisecondes
+            const startRotation = rotationAngle;
+            const endRotation = rotationAngle + Math.PI / 2;
+            function animateRotation(currentTime) {
+                if (lastTime !== null) {
+                    const deltaTime = (currentTime - lastTime) / 1000; // en secondes
+                    rotationAngle = startRotation + (endRotation - startRotation) * Math.min(currentTime - startTime, duration) / duration;
+                    face.rotation.z = rotationAngle;
+                    if (currentTime - startTime >= duration) {
+                        isRotating = false;
+                        return;
+                    }
+                }
+                lastTime = currentTime;
+                requestAnimationFrame(animateRotation);
+            }
+            requestAnimationFrame(animateRotation);
         }
 
-        // Écouteur d'événements pour la touche 'a'
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'a') {
-                rotateFaceZ();
+        // Gestion des événements clavier pour la rotation de la face
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "ArrowRight") {
+                rotateFace();
             }
         });
 
