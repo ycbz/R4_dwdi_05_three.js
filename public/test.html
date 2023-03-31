@@ -51,24 +51,6 @@
         }
         scene.add(cubeGroup);
 
-        // // Création des cubes pour la face
-        // const size = 0.5;
-        // const gap = 0.05;
-        // const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff, 0x999999, 0x333333];
-        // for (let i = 0; i < 9; i++) {
-        //     const x = (i % 3) * (size + gap) - size;
-        //     const y = Math.floor(i / 3) * (size + gap) - size;
-        //     const z = size / 2;
-        //     const color = colors[i];
-        //     const cubeGeometry = new THREE.BoxGeometry(size, size, size);
-        //     const cubeMaterial = new THREE.MeshBasicMaterial({ color });
-        //     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        //     cube.position.set(x, y, z);
-        //     group.add(cube);
-        // }
-
-        // scene.add(group);
-
         // Animation de rotation de la face
         const rotationSpeed = Math.PI / 2; // en radians par seconde
         let lastTime = null;
