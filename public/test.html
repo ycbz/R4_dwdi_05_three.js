@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rubik's Cubi</title>
+    <script src="path/to/tween.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <script src="./path/to/tween.min.js" type="module"></script>
+    <script type="module">
+        // Import de la librairie
+        import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+        import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js";
+        import * as TWEEN from 'https://registry.npmjs.org/@tweenjs/tween.js/-/tween.js-18.6.4.tgz';
+
+        // Création de la scène et de la caméra
+        const scene = new THREE.Scene();
+        const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 1000);
+        camera.position.z = 5;
+
+        // Création d'un groupe pour les plans carrés de la face
+        const group = new THREE.Group();
+
+        // Création des plans carrés pour la face
+        const size = 0.5;
+        const gap = 0.05;
+        const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff, 0x999999, 0x333333];
+        for (let i = 0; i < 9; i++) {
+            const x = (i % 3) * (size + gap) - size;
+            const y = Math.floor(i / 3) * (size + gap) - size;
+            const color = colors[i];
+            const planeGeometry = new THREE.BoxGeometry(size, size, 0.01);
+            const planeMaterial = new THREE.MeshBasicMaterial({ color });
+            const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.position.set(x, y, 0);
+            group.add(plane);
+        }
+
+        scene.add(group);
+
+        // Fonction de rotation de la face sur l'axe z
+        function rotateFaceZ() {
+            const angle = Math.PI / 2; // Angle de rotation
+            const duration = 500; // Durée de la rotation en ms
+            const delay = 1000; // Délai avant de commencer la rotation en ms
+            const quaternion = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), angle); // Calcul du quaternion de rotation
+            const tween = new TWEEN.Tween(group.quaternion)
+                .to({ x: quaternion.x, y: quaternion.y, z: quaternion.z, w: quaternion.w }, duration)
+                .delay(delay)
+                .start();
+        }
+
+        // Écouteur d'événements pour la touche 'a'
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'a') {
+                rotateFaceZ();
+            }
+        });
+
+        // Rendu de la scène
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // Fonction pour redimensionner la scène à la fenêtre
+        function OnWindowResize() {
+            let SCREEN_WIDTH = window.innerWidth;
+            let SCREEN_HEIGHT = window.innerHeight;
+            let ratioLargeurHauteur = SCREEN_WIDTH / SCREEN_HEIGHT;
+
+            camera.aspect = ratioLargeurHauteur;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+        }
+        window.addEventListener("resize", OnWindowResize);
+
+        function animate() {
+            requestAnimationFrame(animate);
+            TWEEN.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+    </script>
+</body>
+
+</html>
