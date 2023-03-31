@@ -16,6 +16,7 @@
 <body>
     <script type="module">
         import * as THREE from 'https://unpkg.com/three/build/three.module.js';
+        import { OrbitControls } from "https://cdn.jsdelivr.net/npm/three@0.121.1/examples/jsm/controls/OrbitControls.js";
 
         // Création de la scène et de la caméra
         const scene = new THREE.Scene();
@@ -25,22 +26,48 @@
         // Création d'un groupe pour les plans carrés de la face
         const group = new THREE.Group();
 
-        // Création des plans carrés pour la face
-        const size = 0.5;
-        const gap = 0.05;
-        const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff, 0x999999, 0x333333];
-        for (let i = 0; i < 9; i++) {
-            const x = (i % 3) * (size + gap) - size;
-            const y = Math.floor(i / 3) * (size + gap) - size;
-            const color = colors[i];
-            const planeGeometry = new THREE.BoxGeometry(size, size, 0.01);
-            const planeMaterial = new THREE.MeshBasicMaterial({ color });
-            const plane = new THREE.Mesh(planeGeometry, planeMaterial);
-            plane.position.set(x, y, 0);
-            group.add(plane);
-        }
+        // Cube originel
+        var geometryCube = new THREE.BoxGeometry(1, 1, 1);
+        var materialCube1 = new THREE.MeshBasicMaterial({ color: 0xff8000, side: THREE.DoubleSide }); // Face avant - orange
+        var materialCube2 = new THREE.MeshBasicMaterial({ color: 0xff0000, side: THREE.DoubleSide }); // Face arrière - rouge
+        var materialCube3 = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide }); // Face supérieure - blanc
+        var materialCube4 = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide }); // Face inférieure - jaune
+        var materialCube5 = new THREE.MeshBasicMaterial({ color: 0x0000ff, side: THREE.DoubleSide }); // Face gauche - bleu
+        var materialCube6 = new THREE.MeshBasicMaterial({ color: 0x00ff00, side: THREE.DoubleSide }); // Face droite - vert
 
-        scene.add(group);
+        var cubeGroup = new THREE.Group();
+        var cubeSize = 1.01;
+
+        // Boucle pour créer tous les cubes
+        for (let i = 0; i < 9; i++) {
+            const cubeName = `cube${i}`;
+            const cube = new THREE.Mesh(geometryCube, [materialCube1, materialCube2, materialCube3, materialCube4, materialCube5, materialCube6]);
+            const x = (i % 3) * cubeSize;
+            const y = Math.floor(i / 3) * cubeSize;
+            const z = cubeSize / 2;
+            cube.position.set(x - cubeSize, y - cubeSize, z - cubeSize);
+            cube.name = cubeName; // assigner le nom unique à la propriété "name" de l'objet cube
+            cubeGroup.add(cube);
+        }
+        scene.add(cubeGroup);
+
+        // // Création des cubes pour la face
+        // const size = 0.5;
+        // const gap = 0.05;
+        // const colors = [0xff0000, 0x00ff00, 0x0000ff, 0xffff00, 0xff00ff, 0x00ffff, 0xffffff, 0x999999, 0x333333];
+        // for (let i = 0; i < 9; i++) {
+        //     const x = (i % 3) * (size + gap) - size;
+        //     const y = Math.floor(i / 3) * (size + gap) - size;
+        //     const z = size / 2;
+        //     const color = colors[i];
+        //     const cubeGeometry = new THREE.BoxGeometry(size, size, size);
+        //     const cubeMaterial = new THREE.MeshBasicMaterial({ color });
+        //     const cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        //     cube.position.set(x, y, z);
+        //     group.add(cube);
+        // }
+
+        // scene.add(group);
 
         // Animation de rotation de la face
         const rotationSpeed = Math.PI / 2; // en radians par seconde
@@ -59,7 +86,7 @@
                 if (lastTime !== null) {
                     const deltaTime = (currentTime - lastTime) / 1000; // en secondes
                     rotationAngle = startRotation + (endRotation - startRotation) * Math.min(currentTime - startTime, duration) / duration;
-                    group.rotation.z = rotationAngle;
+                    cubeGroup.rotation.z = rotationAngle;
                     if (rotationAngle >= endRotation) {
                         isRotating = false;
                         return;
@@ -96,8 +123,12 @@
         }
         window.addEventListener("resize", OnWindowResize);
 
+        // Contrôle de l'orbite
+        const controls = new OrbitControls(camera, renderer.domElement);
+
         function animate() {
             requestAnimationFrame(animate);
+            controls.update();
             renderer.render(scene, camera);
         }
         animate();
