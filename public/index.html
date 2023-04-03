@@ -94,73 +94,77 @@
         const cube25 = scene.getObjectByName("cube25"); // Groupes 3 & 7
         const cube26 = scene.getObjectByName("cube26"); // Groupes 2 & 6
 
+        const group = new THREE.Group();
         const group1 = new THREE.Group();
-        group1.add(cube0, cube1, cube2, cube9, cube11, cube18, cube19, cube20);
-        // const group2 = new THREE.Group();
-        // group2.add(cube0, cube1, cube2, cube3, cube5, cube6, cube7, cube8);
-        // const group3 = new THREE.Group();
-        // group3.add(cube6, cube7, cube9, cube15, cube17, cube21, cube24, cube25, cube26);
-        // const group4 = new THREE.Group();
-        // group4.add(cube5, cube23, cube24, cube25, cube26);
-        const group5 = new THREE.Group();
-        group5.add(cube0, cube1, cube2, cube9, cube11, cube18, cube19, cube20);
-        // const group6 = new THREE.Group();
-        // group6.add(cube0, cube1, cube2, cube3, cube5, cube6, cube7, cube8);
-        // const group7 = new THREE.Group();
-        // group7.add(cube7, cube9, cube15, cube17, cube21, cube24, cube25, cube26);
-        // const group8 = new THREE.Group();
-        // group8.add();
+        group.add(cube0, cube3, cube6, cube9, cube12, cube15, cube18, cube21, cube24);
+        group1.add(cube2, cube5, cube8, cube11, cube14, cube17, cube20, cube23, cube26);
+        scene.add(group, group1);
 
-        scene.add(group1, group5);
+        // Rotations
+        document.addEventListener('keydown', function (event) {
+            // Groupe
+            if (event.key === 'q') {
+                var rotation = 0;
+                var angleDegGauche = 90;
+                var angleRadGauche = angleDegGauche * Math.PI / 180;
+                var rotateSpeed = Math.PI / 180;
 
-        // Ajout d'un événement de souris pour faire tourner le cube
-        const mouse = new THREE.Vector2();
-        const raycaster = new THREE.Raycaster();
-        let isDragging = false;
-        let previousMousePosition = { x: 0, y: 0 };
-        const rotateSpeed = 0.5;
-
-        function onMouseMove(event) {
-            // Calcul de la position de la souris en coordonnées normalisées (-1 à 1)
-            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-            // Rotation du cube en fonction de la position de la souris
-            if (isDragging) {
-                const deltaMove = {
-                    x: event.clientX - previousMousePosition.x,
-                    y: event.clientY - previousMousePosition.y
-                };
-
-                const deltaRotationQuaternion = new THREE.Quaternion()
-                    .setFromEuler(new THREE.Euler(
-                        toRadians(deltaMove.y * rotateSpeed),
-                        toRadians(deltaMove.x * rotateSpeed),
-                        0,
-                        'XYZ'
-                    ));
-
-                cube10.quaternion.multiplyQuaternions(deltaRotationQuaternion, cube10.quaternion);
+                function animateGroupCubeGauche() {
+                    if (rotation < angleRadGauche) {
+                        group.rotateX(rotateSpeed);
+                        rotation += rotateSpeed;
+                        requestAnimationFrame(animateGroupCubeGauche);
+                    }
+                }
+                animateGroupCubeGauche();
             }
+            if (event.key === 'd') {
+                var rotation = 0;
+                var angleDegDroite = -90;
+                var angleRadDroite = angleDegDroite * Math.PI / 180;
+                var rotateSpeed = Math.PI / 180;
 
-            previousMousePosition = {
-                x: event.clientX,
-                y: event.clientY
-            };
-        }
+                function animateGroupCubeDroite() {
+                    if (rotation > angleRadDroite) {
+                        group.rotateX(-rotateSpeed);
+                        rotation -= rotateSpeed;
+                        requestAnimationFrame(animateGroupCubeDroite);
+                    }
+                }
+                animateGroupCubeDroite();
+            }
+            // Groupe 1
+            if (event.key === 'a') {
+                var rotation = 0;
+                var angleDegGauche = 90;
+                var angleRadGauche = angleDegGauche * Math.PI / 180;
+                var rotateSpeed = Math.PI / 180;
 
-        function onMouseDown(event) {
-            isDragging = true;
-        }
+                function animateGroupCubeGauche1() {
+                    if (rotation < angleRadGauche) {
+                        group1.rotateX(rotateSpeed);
+                        rotation += rotateSpeed;
+                        requestAnimationFrame(animateGroupCubeGauche1);
+                    }
+                }
+                animateGroupCubeGauche1();
+            }
+            if (event.key === 'e') {
+                var rotation = 0;
+                var angleDegDroite = -90;
+                var angleRadDroite = angleDegDroite * Math.PI / 180;
+                var rotateSpeed = Math.PI / 180;
 
-        function onMouseUp(event) {
-            isDragging = false;
-        }
-
-        // Ajout des écouteurs d'événements de la souris
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mousedown', onMouseDown);
-        window.addEventListener('mouseup', onMouseUp);
+                function animateGroupCubeDroite1() {
+                    if (rotation > angleRadDroite) {
+                        group1.rotateX(-rotateSpeed);
+                        rotation -= rotateSpeed;
+                        requestAnimationFrame(animateGroupCubeDroite1);
+                    }
+                }
+                animateGroupCubeDroite1();
+            }
+        });
 
         // Fonction utilitaire pour convertir les degrés en radians
         function toRadians(angle) {
@@ -176,21 +180,6 @@
         // Fonction d'affichage du rendu
         function animate() {
             requestAnimationFrame(animate);
-            const speed = 0.1;
-            // Déplacement horizontal
-            if (keys.ArrowRight) {
-                cube6.position.x += speed;
-            } else if (keys.ArrowLeft) {
-                cube6.position.x -= speed;
-            }
-
-            // Déplacement vertical
-            if (keys.ArrowUp) {
-                cube6.position.y += speed;
-            } else if (keys.ArrowDown) {
-                cube6.position.y -= speed;
-            }
-
             renderer.render(scene, camera);
         }
 
