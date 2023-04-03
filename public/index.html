@@ -95,10 +95,16 @@
         const cube26 = scene.getObjectByName("cube26");
 
         const group = new THREE.Group();
-        const group1 = new THREE.Group();
         group.add(cube0, cube3, cube6, cube9, cube12, cube15, cube18, cube21, cube24);
+        scene.add(group);
+
+        const group1 = new THREE.Group();
         group1.add(cube2, cube5, cube8, cube11, cube14, cube17, cube20, cube23, cube26);
-        scene.add(group, group1);
+        scene.add(group1);
+
+        const group2 = new THREE.Group();
+        group2.add(cube1, cube4, cube7, cube10, cube13, cube16, cube19, cube22, cube25);
+        scene.add(group2);
 
         // Rotations
         document.addEventListener('keydown', function (event) {
@@ -133,6 +139,7 @@
                 }
                 animateGroupCubeDroite();
             }
+
             // Groupe 1
             if (event.key === 'a') {
                 var rotation = 0;
@@ -163,6 +170,38 @@
                     }
                 }
                 animateGroupCubeDroite1();
+            }
+
+            // Groupe 2
+            if (event.key === 'w') {
+                var rotation = 0;
+                var angleDegGauche = 90;
+                var angleRadGauche = angleDegGauche * Math.PI / 180;
+                var rotateSpeed = Math.PI / 180;
+
+                function animateGroupCubeGauche2() {
+                    if (rotation < angleRadGauche) {
+                        group2.rotateX(rotateSpeed);
+                        rotation += rotateSpeed;
+                        requestAnimationFrame(animateGroupCubeGauche2);
+                    }
+                }
+                animateGroupCubeGauche2();
+            }
+            if (event.key === 'c') {
+                var rotation = 0;
+                var angleDegDroite = -90;
+                var angleRadDroite = angleDegDroite * Math.PI / 180;
+                var rotateSpeed = Math.PI / 180;
+
+                function animateGroupCubeDroite2() {
+                    if (rotation > angleRadDroite) {
+                        group2.rotateX(-rotateSpeed);
+                        rotation -= rotateSpeed;
+                        requestAnimationFrame(animateGroupCubeDroite2);
+                    }
+                }
+                animateGroupCubeDroite2();
             }
         });
 
